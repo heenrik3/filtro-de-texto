@@ -6,7 +6,7 @@
 #include "List.h"
 #include "utils.h"
 
-#define BUFFER_SIZE 1024 * 1024 * 50 // 50MB buffer
+#define BUFFER_SIZE 1024 * 1024 * 10 // 10MB buffer
 
 int main(int argc, char const *argv[])
 {
@@ -20,14 +20,24 @@ int main(int argc, char const *argv[])
         exit(1);
     }
 
-    puts("Lendo arquivo...");
+    double currentPercentage = 0;
+    long totalFileSize = getFileSize(input), currentSize = 0, bytesRead = 0;
 
-    while (fread(buffer, 1, BUFFER_SIZE, input))
+    puts("Lendo arquivo...");
+    while (bytesRead = fread(buffer, 1, BUFFER_SIZE, input))
     {
+        currentSize += bytesRead;
+
+        currentPercentage = calculatePercentage(totalFileSize, currentSize);
+
+        system("clear");
+
+        printf("Progresso: %.2f%%\n", currentPercentage);
+
         puts("Removendo lixo...");
         clean_line(buffer);
 
-        puts("Tokenizando palavras...");
+        puts("Separando palavras...");
         list* raw_words = split(buffer, " ");
 
         puts("Filtrando...");
@@ -60,11 +70,8 @@ int main(int argc, char const *argv[])
 
     }));
 
-    // forEach(words, printer);
-
-    puts("Salvando palavras em arquivo...");
-    outputList(words);
-
+    print_list(words);
+    
     clear_list(words);
     free(words);
     

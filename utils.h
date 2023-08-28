@@ -1,3 +1,7 @@
+double calculatePercentage(long total, long current)
+{
+    return (double) ((double)current / (double)total) * 100.0;
+}
 void clean_line(char *line)
 {
     for (int c = 0; line[c]; c++)
@@ -68,3 +72,14 @@ void outputList(list *words)
 
     fclose(output);
 }
+
+long getFileSize(FILE *f)
+{
+    fseek(f, 0, SEEK_END);
+    long size = ftell(f);
+    fseek(f, 0, SEEK_SET);
+
+    return size;
+}
+
+
